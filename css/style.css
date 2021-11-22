@@ -1,4 +1,3 @@
-/*assign full width inputs*/
 input[type=text],
 input[type=password] {
     width: 100%;
