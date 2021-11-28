@@ -1,84 +1,49 @@
-let currentUser
-try {
-    currentUser=JSON.parse(window.localStorage.getItem('user'));
-} catch {
-    window.location = 'index.html'
-}
+const todoNode = document.querySelector("#todo");
+const buttonNode = document.querySelector("#button");
+var taskCompleted = 0
 
-// setting welcome text
-$('#welcome').html(`Welcome ${currentUser.uname} to your ToDoList`);
-
-// AJAX call to fetch data using axios library.
-const getList=async ()=>{
-    try{
-        const res=await axios.get('https://jsonplaceholder.typicode.com/todos');
-        const lists=res.data;
-        let listcontent='<tbody>';
-        lists.forEach((el) => {
-            listcontent += `
-                <tr>
-                    <td>${el.userId}</td>
-                    <td>${el.id}</td>
-                    <td>${el.title}</td>
-                    <td>${el.completed ? '<input type="checkbox" class="disabled" checked disabled>' : '<input type="checkbox" class="checkbox">'}</td>
-                </tr>
-            `
-        });
-        listcontent += '</tbody>'
-        $('#todoList').append(listcontent);
-        if(checkedCount){
-            checkedCount=0;
+function showList() {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            let response = JSON.parse(this.response);
+            let data = "";
+            for (var i = 0; i < response.length; i++) {
+                if (response[i].completed == true) {
+                    data += `<li class="list-group-item list-group-item-primary">
+                    <label>${response[i].id})</label>
+                    <label>${response[i].title}-</label>
+                       <input id ="checkBox${i + 1}" class="form-check-input me-1" type="checkbox" value="" checked disabled>
+                     
+                    
+                     </li>`;
+                } else {
+                    data += `<li class="list-group-item list-group-item-secondary">
+                    <label>${response[i].id})</label>
+                    <label>${response[i].title}-</label>
+                    <input id ="checkBox${i + 1}" class="form-check-input me-1" type="checkbox" value="" onchange="checkTodo(${i + 1})">
+                  
+                  </li>`;
+                }
+            }
+            todoNode.innerHTML = data;
+            buttonNode.innerHTML = "";
         }
-
     }
-    catch(e){
-        console.log('failed to fetch lists data',e);
-    }
-}
-// call getlist() when GET LIST is clicked.
-$('#getList').on('click',(e)=>{
-    e.preventDefault();
-    getList();
-});
-
-//variable to keep track of cheking list items
-let checkedCount=0;
-
-const alertPromise= ()=>{
-     return new Promise((resolve,reject)=>{
-
-         
-        if(checkedCount===5){
-            resolve(checkedCount)
-        }
-        else{
-            reject('count not equal to 5');
-        }
-    });
-}
-
-const promiseCall=()=>{
-    alertPromise().then((data)=>{
-        alert(`Congrats. ${data} Tasks have been Successfully Completed`);
-    })
-    .catch((err)=>{
-        console.log('promise rejected');
-    })
+    xhttp.open("GET", "https://jsonplaceholder.typicode.com/todos", true);
+    xhttp.send();
 }
 
 
-getList();
 
-$('#todoList').on('change','.checkbox',function(e){
-    if($(this).prop('checked')==true){
-        console.log('checked');
-        checkedCount++; 
-        $(this).parent().addClass('active');
+function checkTodo(num) {
+    const checkBoxNode = document.querySelector(`#checkBox${num}`);
+    if (checkBoxNode.checked) {
+        taskCompleted += 1;
+    } else {
+        taskCompleted -= 1;
     }
-    else{
-        checkedCount--;
-        console.log('unchecked');
-        $(this).parent().removeClass('active');
-    }   
-    promiseCall();
-});
+    if (taskCompleted == 5) {
+        alert("Congrats. 5 Tasks have been Successfully Completed.");
+    }
+}
