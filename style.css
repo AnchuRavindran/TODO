@@ -28,7 +28,7 @@ body {
 
 .myCtn {
     position: relative;
-    background: url("./");
+    background: url("./7.jpg");
     background-size: cover;
     border-radius: 20px;
     height: 100%;
@@ -82,11 +82,12 @@ body {
 }
 
 .myCtn .butt {
-    background: linear-gradient(45deg, #617BE3, #4A69BB);
+    background: linear-gradient(45deg, white, black);
     color: #fff;
     width: 150px;
     border: none;
     border-radius: 5px;
+    
     padding: 10px;
     -webkit-box-shadow: 0px 10px 41px -11px rgba(0, 0, 0, 0.7);
     -moz-box-shadow: 0px 10px 41px -11px rgba(0, 0, 0, 0.7);
@@ -94,7 +95,7 @@ body {
 }
 
 .myCtn .butt:hover {
-    background: linear-gradient(45deg, #4A69BB, #617BE3);
+    background: linear-gradient(45deg, black, white);
 }
 
 .myCtn .butt:focus {
@@ -116,7 +117,7 @@ body{
 #marquee{
     font-weight: bolder;
     font-size: 2em;
-    color: darkred;
+    color:black;
 }
 .navbar-light{
     font-weight: bolder;
